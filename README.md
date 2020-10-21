@@ -1,5 +1,5 @@
 # boligportal_scrapeR
-A simple scraper for boligportal.dk written in R using Selenium. Written for personal use.
+A simple web scraper for boligportal.dk written in R using Selenium. Written for personal use.
 
 Required packages: `c("tidyverse", "rvest", "RSelenium", "beepr", "netstat")`
 
@@ -9,3 +9,4 @@ When a new property is found, the scraper:
 - Adds the property to the `set.csv` file of seen listings.
 - Opens the boligportal.dk listing in the standard browser. If there are more than 3 new listings on the page, opens the results page instead.
 - Prints basic information about the listing to terminal.
+- Plays an annoying notification sound using the `beepr` 📦 package.
