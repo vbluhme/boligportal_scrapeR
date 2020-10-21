@@ -1,7 +1,7 @@
 source("scraper.R")
 
 ## Config
-# URL for search results. Includes location, max rent, etc.
+# URL for search results. Encodes location, max rent, etc.
 url <- "https://www.boligportal.dk/find?placeIds=49%2C14%2C24%2C365%2C106%2C19%2C44%2C817&housingTypes=3&minRooms=2&maxRent=13000&minRentalPeriod=3"
 
 # File for storing table of seen properties

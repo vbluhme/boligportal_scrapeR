@@ -18,8 +18,6 @@ main <- function(url, n_pages, filename, sleep_seconds) {
     "Påbegynder løkke klokken ", format(Sys.time(), "%H:%M:%S"), ". ",
     "Tjekker hvert ", sleep_seconds, ". sekund."
   ))
-  message("")
-  message("Antal tjek fuldendt: ")
   
   run(url, filename, sleep_seconds, n_loop = 1)
 }
@@ -43,13 +41,16 @@ check_n_pages <- function(url, n_pages, filename) {
   if (n_pages <= 0) return()
   
   message(paste("Henter første", n_pages, "sider"))
-  for (i in 0:(n_pages-1)) {
-    url_page <- paste0(url, "&startRecord=", i*18)
-    check_page(url_page, filename)
-  }
+  
+  url_list <- paste0(url, "&startRecord=", 0:(n_pages-1)*18)
+  map(url_list, check_page, filename)
+
   message("Færdig med at tjekke første sider.")
 }
 
+# Navigates to url. Checks 5 times spaced by 2 seconds. 
+# If page not loaded within 10 seconds, returns warning.
+# If page loads, call check_new
 check_page <- function(url, filename) {
   df <- NULL
   client$navigate(url)
@@ -58,7 +59,7 @@ check_page <- function(url, filename) {
     df <- tryCatch(parsepage(), warning = function(e) NULL)
     if (!is.null(df)) break()
   }
-  if (is.null(df)) warning("err")
+  if (is.null(df)) {warning("err"); return()}
   check_new(df, filename, goto = url)
 }
 
@@ -94,7 +95,7 @@ check_new <- function(df, filename, goto = NULL) {
   new <- df %>% 
     filter(!(link %in% seen_links))
   
-  if(nrow(new) > 0) {
+  if(nrow(new)) {
     beep(5)
     new %>% write_csv(filename, append = !is.null(seen_links))
     
