@@ -10,3 +10,9 @@ When a new listing is found, the scraper:
 - Opens the boligportal.dk listing in the standard browser. If there are more than 3 new listings on the page, opens the results page instead.
 - Prints basic information about the listing to terminal.
 - Plays an annoying notification sound using the `beepr` 📦 package.
+
+Other scraping tools for Boligportalen: 
+- https://github.com/Minibrams/boligportal-scraper
+- https://github.com/srn/boligscraper.cs
+- https://github.com/JonathanIsakMarin/housing-rentals
+- https://github.com/albertfdp/boligscraper.js
