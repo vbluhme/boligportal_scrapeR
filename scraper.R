@@ -7,7 +7,7 @@ library(netstat)
 
 main <- function(url, n_pages, filename, sleep_seconds) {
   # Start Selenium, assign to global environment
-  rD <<- rsDriver(browser=c("chrome"), chromever = "86.0.4240.22", port = netstat::free_port())
+  rD <<- rsDriver(browser=c("firefox"),  port = netstat::free_port())
   client <<- rD$client
   
   ## Run first round, check n pages back
@@ -64,17 +64,17 @@ check_page <- function(url, filename) {
 }
 
 parsepage <- function() {
-  adcards <- client$getPageSource()[[1]] %>% 
+  cards <- client$getPageSource()[[1]] %>% 
     read_html() %>% 
-    html_nodes(".PropertyList") %>% 
-    html_nodes(".RentalCard")
+    html_nodes(".css-17sv87t-Box-Box") %>% 
+    html_nodes(".css-1gsgxxt")
   
-  title <- adcards %>% html_nodes(".RentalCard__title") %>% html_text()
-  price <- adcards %>% html_nodes(".RentalCard__price") %>% html_text() %>%
+  title <- cards %>% html_nodes(".css-xr43j5-Text-Text") %>% html_text()
+  price <- cards %>% html_nodes(".css-17trunh-Box-Box") %>% html_text() %>%
     map_dbl(parse_number, locale=locale(grouping_mark=". ", decimal_mark=","))
-  loc <- adcards %>% html_nodes(".RentalCard__location") %>% html_text()
-  desc <- adcards %>% html_nodes(".RentalCard__description") %>% html_text()
-  link <- adcards %>% html_attr('href') %>% map_chr(~paste0("https://www.boligportal.dk", .x))
+  loc <- cards %>% html_nodes(".css-1wrf1k9-Text-Text") %>% html_text()
+  desc <- cards %>% html_nodes(".css-d6t92q-Text-Text") %>% html_text()
+  link <- cards %>% html_attr('href') %>% map_chr(~paste0("https://www.boligportal.dk", .x))
   
   tibble(title, price, loc, link, desc, date = Sys.time())
 }
